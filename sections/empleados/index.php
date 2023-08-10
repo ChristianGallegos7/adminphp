@@ -1,9 +1,12 @@
 <?php
 include("../../bd.php");
 
-
 //listar los empleados
-$sentencia = $conexion->prepare("SELECT * FROM tbl_empleados");
+$sentencia = $conexion->prepare("SELECT *,
+(SELECT nombredelpuesto 
+FROM tbl_puestos
+WHERE tbl_puestos.idpuesto=tbl_empleados.idpuesto limit 1) as puesto 
+FROM tbl_empleados");
 $sentencia->execute();
 $lista_tbl_empleados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -44,8 +47,8 @@ $lista_tbl_empleados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
                             </td>
                             <td><?php echo $registro['foto'] ?></td>
                             <td><?php echo $registro['cv'] ?></td>
-                            <td>Programador jr</td>
-                            <td>12/12/12</td>
+                            <td><?php echo $registro['puesto'] ?></td>
+                            <td><?php echo $registro['fechadeingreso'] ?></td>
                             <td>
                                 <a name="" id="" class="btn btn-primary" href="#" role="button">Carta</a>
                                 <a name="" id="" class="btn btn-success" href="#" role="button">Editar</a>
